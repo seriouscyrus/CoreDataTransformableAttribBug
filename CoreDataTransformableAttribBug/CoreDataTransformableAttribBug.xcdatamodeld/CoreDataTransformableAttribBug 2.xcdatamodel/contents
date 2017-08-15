@@ -2,9 +2,8 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13196.5" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="CoreDataEntity" representedClassName="CoreDataEntity" syncable="YES">
         <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="transformable" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CoreDataEntity" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="CoreDataEntity" positionX="-63" positionY="-18" width="128" height="58"/>
     </elements>
 </model>

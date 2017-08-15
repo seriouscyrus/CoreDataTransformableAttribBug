@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "CoreDataEntity+CoreDataProperties.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NSLog(@"Persistent Container = %@", self.persistentContainer);
+    if (self.persistentContainer) {
+        NSManagedObjectContext *context = self.persistentContainer.viewContext;
+        NSFetchRequest *fr = [NSFetchRequest fetchRequestWithEntityName:@"CoreDataEntity"];
+        NSArray <CoreDataEntity *> *result = [context executeFetchRequest:fr error:nil];
+        if (result.count == 0) {
+            CoreDataEntity *ent = [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataEntity" inManagedObjectContext:context];
+            //ent.transformable = [UIColor whiteColor];
+            ent.string = @"White";
+            ent.transformable = [UIColor whiteColor];
+            [self saveContext];
+        } else {
+            CoreDataEntity *ent = result.firstObject;
+            NSLog(@"Entity = %@", ent);
+            NSLog(@"Entity.colour = %@", ent.transformable);
+        }
+    }
     return YES;
 }
 
@@ -58,7 +76,13 @@
     // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.
     @synchronized (self) {
         if (_persistentContainer == nil) {
+            NSURL *defaultURL = [NSPersistentContainer defaultDirectoryURL];
+            defaultURL = [defaultURL URLByAppendingPathComponent:@"CoreDataTransformableAttribBug.binary"];
             _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"CoreDataTransformableAttribBug"];
+            NSPersistentStoreDescription *desc = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:defaultURL];
+            
+            desc.type = NSBinaryStoreType;
+            _persistentContainer.persistentStoreDescriptions = @[desc];
             [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *storeDescription, NSError *error) {
                 if (error != nil) {
                     // Replace this implementation with code to handle the error appropriately.
@@ -74,6 +98,8 @@
                     */
                     NSLog(@"Unresolved error %@, %@", error, error.userInfo);
                     abort();
+                } else {
+                    NSLog(@"Description = %@", storeDescription);
                 }
             }];
         }
