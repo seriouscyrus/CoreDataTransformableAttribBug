@@ -82,6 +82,7 @@
             NSPersistentStoreDescription *desc = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:defaultURL];
             
             desc.type = NSBinaryStoreType;
+            [desc setOption:[NSSet setWithObjects:[UIColor class], nil] forKey:@"NSBinaryStoreSecureDecodingClasses"];
             _persistentContainer.persistentStoreDescriptions = @[desc];
             [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *storeDescription, NSError *error) {
                 if (error != nil) {
